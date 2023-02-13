@@ -1,45 +1,66 @@
-function mensaje(){
-    alert ("bienvenido para registrase,complete los siguientes datos");
+const producto = [
+    {nombre:"smirnoff", precio: 1.439 },
+    {nombre:"sky", precio: 1.437 },
+    {nombre:"absolut", precio: 5.399 },
+    {nombre:"sernova", precio: 1.455 },
+    {nombre:"new style", precio: 839 },
+
+];
+let carrito =[] 
+
+let seleccion = prompt("bienvenido a la mejor tienda de bebida desea comprar si o no" )
+
+while (seleccion != "si" && seleccion != "no" ){
+    alert("por favor ingresar si o no")
+    seleccion = prompt("hola desea comprar algo si o no")
 }
-function mensaje2(){
-    alert ("se a registrado con exito. ahora ya puede iniciar sesion");
+if(seleccion == "si"){
+    alert("a continuacion nuestra lista de productos")
+    let listaDeProductos = producto.map((producto) => producto.nombre + " " + producto.precio + " " + "Pesos");
+    alert(listaDeProductos.join(" , "))
+}  
+else 
+if(seleccion === "no"){
+    alert("gracias por pasarte por la mejor tienda, hasta pronto!!!")
 }
-mensaje();
-let usuario = prompt("Nombre de usuario");
-let clave = parseInt (prompt("clave numerica"));
-mensaje2();
-let UsuarioAutorizado;
-let intento = 0;
-for (let i = 0; i < 3; i++) 
-
-
-{
-UsuarioAutorizado = prompt("ingrese su usuario"); 
-
-if (UsuarioAutorizado === usuario)
-
-{}
-else
-{alert("usuaro incorrecto,intentelo de nuevo");}
-
-if (UsuarioAutorizado === usuario) 
-
-
-{
-intento = parseInt(prompt("ingrese su clave numerica"));
-
-if(clave === intento)
-
-{alert("sesion iniciada"); break;}
-
-else
-{ alert("clave incorreta,intentelo de nuevo");} 
-
-{intento = parseInt(prompt("ingrese su clave numerica"));   
-
-if(clave === intento)
-
-{ alert("sesion iniciada"); break;} }
+while(seleccion != "no"){
+    let producto = prompt("agrega una bebida al carrito")
+    let precio = 0
+    if(producto == "smirnoff" ||producto == "sky" ||producto == "absolut" ||producto == "sernova" ||producto == "new style" )
+    {switch(producto){ 
+case "smirnoff":
+precio = 1.439;
+break;
+case "sky":
+precio = 1.437;
+break;
+case "absolut":
+precio = 5.399;
+break;
+case "sernova":
+precio = 1.455 ;
+break;
+case "new style":
+precio = 839;
+break;
 }
-} 
+let unidades = parseInt(prompt("cuantas unidades quiere llevar"))
+carrito.push({producto, unidades, precio})
+} else 
+{alert("producto no disponible")}
+seleccion = prompt("¿desea agregar otro producto?")
+while(seleccion === "no") 
+{alert("gracias por la compra, vuelva pronto")
+
+let carritoFinal = carrito.map ((carritoFinal) => "producto:" + carritoFinal.producto + " " + "unidades:" + carritoFinal.unidades + " " + "precio:" +  carritoFinal.unidades * carritoFinal.precio );
+alert(carritoFinal.join(" - "))
+break;
+
+
+}
+}
+
+
+
+
 
