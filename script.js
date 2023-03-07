@@ -1,83 +1,70 @@
-class bebida
-{
-    constructor(nombre,precio)  
-    {
-        this.nombre = nombre;
-        this.precio = precio;
-    } 
-}
-const smirnoff = new bebida("smirnoff",1.439);
-const sky  =     new bebida("sky",1.437);
-const absolut =  new bebida("absolut",5.399);
-const sernova =  new bebida("sernova",1.455);
-const  bols =    new bebida("bols",839); 
+const contenedorProductos = document.getElementById('contenedor-productos')
+const contenedorCarrito = document.getElementById('carrito-contenedor')
+const botonVaciar = document.getElementById('vaciar-carrito')
+const contadorCarrito = document.getElementById('contadorCarrito')
+const cantidad = document.getElementById('cantidad')
+const precioTotal = document.getElementById('precioTotal')
+const cantidadTotal = document.getElementById('cantidadTotal')
 
+let carrito = []
 
-const arraybebidas = [smirnoff,sky,absolut,sernova,bols];
-console.log(arraybebidas)
-
-
-
-let carrito =[] 
-
-let seleccion = prompt("bienvenido a la mejor tienda de bebida desea comprar si o no" )
-
-while (seleccion != "si" && seleccion != "no" ){
-    alert("por favor ingresar si o no")
-    seleccion = prompt("hola desea comprar algo si o no")
-}
-if(seleccion == "si"){
-    alert("a continuacion nuestra lista de productos")
-    let listaDeProductos = arraybebidas.map((producto) => producto.nombre + " " + producto.precio + " " + "Pesos");
-    alert(listaDeProductos.join(" , "))
-}  
-else 
-if(seleccion === "no"){
-    alert("gracias por pasarte por la mejor tienda, hasta pronto!!!")
-}
-while(seleccion != "no"){
-    let producto = prompt("agrega una bebida al carrito (smirnoff-sky-absolut,sernova,bols)");
-    let precio = 0;
-
-
-
-    if(producto == "smirnoff" ||producto == "sky" ||producto == "absolut" ||producto == "sernova" ||producto == "bols" )
-    {switch(producto){ 
-case "smirnoff":
-precio = 1.439;
-break;
-case "sky":
-precio = 1.437;
-break;
-case "absolut":
-precio = 5.399;
-break;
-case "sernova":
-precio = 1.455 ;
-break;
-case "bols":
-precio = 839;
-break;
-}
-let unidades = parseInt(prompt("cuantas unidades quiere llevar"))
-carrito.push({producto, unidades, precio})
-
-} else 
-{alert("producto no disponible")}
-seleccion = prompt("¿desea agregar otro producto?")
-while(seleccion === "no") 
-{alert("gracias por la compra, vuelva pronto")
-
-let carritoFinal = carrito.map ((carritoFinal) => "producto:" + carritoFinal.producto + " " + "unidades:" + carritoFinal.unidades + " " + "precio:" +  carritoFinal.unidades * carritoFinal.precio );
-alert(carritoFinal.join(" - "))
-break;
-
-
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('carrito')){
+        carrito = JSON.parse(localStorage.getItem('carrito'))
+        actualizarCarrito()
+    }
+})
+botonVaciar.addEventListener('click', () => {
+    carrito.length = 0
+    actualizarCarrito()
+})
+stockProductos.forEach((producto) => {
+    const div = document.createElement('div')
+    div.classList.add('producto')
+    div.innerHTML = `
+    <img src=${producto.img} alt= "">
+    <h3>${producto.nombre}</h3>
+    <p>${producto.desc}</p>
+    <p class="precioProducto">Precio:$ ${producto.precio}</p>
+    <button id="agregar${producto.id}" class="boton-agregar">Agregar <i class="fas fa-shopping-cart"></i></button>`
+    contenedorProductos.appendChild(div)
+    const boton = document.getElementById(`agregar${producto.id}`)
+    boton.addEventListener('click', () => {agregarAlCarrito(producto.id)})
+})
+const agregarAlCarrito = (prodId) => {
+    const existe = carrito.some (prod => prod.id === prodId) 
+    if (existe){ const prod = carrito.map (prod => { 
+            if (prod.id === prodId){
+                prod.cantidad++
+            }
+        })
+    } else { 
+        const item = stockProductos.find((prod) => prod.id === prodId)
+        carrito.push(item)
+    }
+    actualizarCarrito() 
 }
 
+const eliminarDelCarrito = (prodId) => {
+    const item = carrito.find((prod) => prod.id === prodId)
+    const indice = carrito.indexOf(item) 
+    carrito.splice(indice, 1) 
+    actualizarCarrito() 
 }
 
-
-
-
-
+const actualizarCarrito = () => {
+    contenedorCarrito.innerHTML = ""
+    carrito.forEach((prod) => {
+        const div = document.createElement('div')
+        div.className = ('productoEnCarrito')
+        div.innerHTML = `
+        <p>${prod.nombre}</p>
+        <p>Precio:$${prod.precio}</p>
+        <p>Cantidad: <span id="cantidad">${prod.cantidad}</span></p>
+        <button onclick="eliminarDelCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i></button>`
+        contenedorCarrito.appendChild(div)
+        localStorage.setItem('carrito', JSON.stringify(carrito))
+    })
+    contadorCarrito.innerText = carrito.length 
+    precioTotal.innerText = carrito.reduce((acc, prod) => acc + prod.cantidad * prod.precio, 0)
+}
