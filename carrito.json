@@ -1,0 +1,32 @@
+[
+    {
+    "titulo": "smirnoff",
+    "precio": 2500,
+    "imagenSrc": "../img/smirnoff.jpg",
+    "cantidad": 0
+    },
+    {
+    "titulo": "sky",
+    "precio": 1300,
+    "imagenSrc": "../img/sky.jpg",
+    "cantidad": 0
+    },
+    {
+    "titulo": "sernova",
+    "precio": 2300,
+    "imagenSrc": "../img/sernova.jpg",
+    "cantidad": 0
+    },
+    {
+    "titulo": "bols",
+    "precio": 1500,
+    "imagenSrc": "../img/bols.jpg",
+    "cantidad": 0
+    },
+    {
+    "titulo": "absolut",
+    "precio": 2900,
+    "imagenSrc": "../img/absolut.jpg",
+    "cantidad": 0
+    }
+]
